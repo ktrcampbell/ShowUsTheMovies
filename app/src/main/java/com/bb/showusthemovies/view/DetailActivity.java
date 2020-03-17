@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.bb.showusthemovies.R;
 import com.bb.showusthemovies.model.MoviePageResult;
+import com.bb.showusthemovies.util.Constants;
 import com.bumptech.glide.Glide;
 
 import butterknife.BindView;
@@ -44,7 +45,7 @@ public class DetailActivity extends AppCompatActivity {
         releaseDateTextView.setText(displayMovie.getReleaseDate());
         overviewTextView.setText(displayMovie.getOverview());
         Glide.with(this)
-                .load("https://image.tmdb.org/t/p/w500/" + displayMovie.getPosterPath())
+                .load(Constants.BASE_IMAGE + displayMovie.getPosterPath())
                 .into(movieImageView);
 
     }

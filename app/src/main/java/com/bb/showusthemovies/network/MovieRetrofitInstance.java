@@ -30,7 +30,7 @@ public class MovieRetrofitInstance {
         return retrofit.create(MovieService.class);
     }
 
-    public Call<List<MoviePageResult>>getMovies(String userkey){
-        return movieService.getLatestMovie(userkey);
+    public Call<MoviePageResult>getMovies(String apiKey){
+        return movieService.getLatestMovie(Constants.API_KEY, Constants.SORT_BY);
     }
 }

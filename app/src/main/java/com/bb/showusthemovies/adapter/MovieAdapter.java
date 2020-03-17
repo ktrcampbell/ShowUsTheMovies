@@ -47,15 +47,24 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.movie_item_layout, parent, false);
         return new MovieViewHolder(view);
+
     }
 
     @Override
     public void onBindViewHolder(@NonNull MovieAdapter.MovieViewHolder holder, int position) {
 
-        Glide.with(holder.itemView.getContext())
-                .load("https://image.tmdb.org/t/p/w500/" + itemView.getPosterPath())
-                .into(holder.movieImageView);
+        holder.titleTextView.setText(resultList.get(position).getTitle());
+        holder.releaseDateTextView.setText(resultList.get(position).getReleaseDate());
+//        String moviePoster = "";
+        if (resultList.get(position).getPosterPath() == null) {
+        holder.movieImageView.setImageResource(R.drawable.ic_movie);
+    }else
 
+    {
+        Glide.with(holder.itemView.getContext())
+                .load(Constants.BASE_IMAGE + resultList.get(position).getPosterPath())
+                .into(holder.movieImageView);
+    }
         holder.itemView.setOnClickListener(view ->{
             movieClickListener.displayMovie(resultList.get(position));
         });
@@ -88,7 +97,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 //                String filterPattern = constraint.toString().toLowerCase().trim();
 
                 for (MoviePageResult moviePageResult : filterMovieList) {
-                    if (moviePageResult.toLowercase().contains(constraint.toString().toLowerCase())) {
+                    if (moviePageResult.getTitle().toLowerCase().contains(constraint.toString().toLowerCase())) {
                         filteredList.add(moviePageResult);
                     }
                 }
@@ -111,6 +120,12 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
         @BindView(R.id.movie_poster_imageview)
         ImageView movieImageView;
+
+        @BindView(R.id.title_textView)
+        TextView titleTextView;
+
+        @BindView(R.id.release_date_textView)
+        TextView releaseDateTextView;
 
         public MovieViewHolder(@NonNull View itemView) {
             super(itemView);
