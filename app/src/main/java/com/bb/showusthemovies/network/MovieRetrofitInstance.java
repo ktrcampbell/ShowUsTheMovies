@@ -1,7 +1,5 @@
 package com.bb.showusthemovies.network;
 
-import android.provider.SyncStateContract;
-
 import com.bb.showusthemovies.model.MoviePageResult;
 import com.bb.showusthemovies.util.Constants;
 
@@ -13,7 +11,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MovieRetrofitInstance {
 
-    private MovieService movieService;
+    private static MovieService movieService;
 
     public MovieRetrofitInstance(){
         movieService = createService(createRetrofit());
@@ -30,7 +28,7 @@ public class MovieRetrofitInstance {
         return retrofit.create(MovieService.class);
     }
 
-    public Call<MoviePageResult>getMovies(String apiKey){
+    public static Call<List<MoviePageResult>> getRecentMovies(String apiKey){
         return movieService.getLatestMovie(Constants.API_KEY, Constants.SORT_BY);
     }
 }

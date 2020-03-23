@@ -6,34 +6,54 @@
     android:layout_height="match_parent"
     tools:context=".view.HomeActivity">
 
-    <androidx.appcompat.widget.Toolbar
+    <Toolbar
         android:id="@+id/app_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
         android:theme="@style/ToolbarTheme"
         app:actionViewClass="android.widget.SearchView"
+        app:layout_constraintBottom_toBottomOf="@id/main_view_guideline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" >
+        app:layout_constraintTop_toTopOf="parent">
+
 
         <TextView
+            android:id="@+id/menu_title_textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="16dp"
             android:text="@string/menu_title"
-            android:id="@+id/menu_title_textView" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    </androidx.appcompat.widget.Toolbar>
+    </Toolbar>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/movie_recyclerview"
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/main_view_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".1" />
+
+    <FrameLayout
+        android:id="@+id/movie_list_frame"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/main_view_guideline"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/app_toolbar" />
+        app:layout_constraintEnd_toEndOf="parent">
 
-
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/movie_recyclerview"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/main_view_guideline"/>
+    </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

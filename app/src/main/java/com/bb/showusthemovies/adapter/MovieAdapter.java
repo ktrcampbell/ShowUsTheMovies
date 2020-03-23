@@ -13,32 +13,34 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bb.showusthemovies.R;
 import com.bb.showusthemovies.model.MoviePageResult;
+import com.bb.showusthemovies.model.Result;
 import com.bb.showusthemovies.util.Constants;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.microedition.khronos.opengles.GL;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> implements Filterable {
 
-    private List<MoviePageResult> resultList;
-    private List<MoviePageResult> filterMovieList;
+    private List<Result> resultList;
+    private List<Result> filterMovieList;
 
     private MovieClickListener movieClickListener;
 
-    public MovieAdapter(List<MoviePageResult> resultList, MovieClickListener movieClickListener){
+    public MovieAdapter(List<Result> resultList, MovieClickListener movieClickListener){
         this.resultList = resultList;
         this.movieClickListener = movieClickListener;
         this.filterMovieList = new ArrayList<>(resultList);
     }
 
+    public MovieAdapter(List<MoviePageResult> moviePageResults) {
+    }
+
     public interface MovieClickListener{
-        void displayMovie(MoviePageResult moviePageResult);
+        void displayMovie(Result moviePageResult);
     }
 
     @NonNull
@@ -75,11 +77,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         return resultList.size();
     }
 
-    public void setResultList(List<MoviePageResult> movieList){
-        this.resultList.clear();
-        this.resultList.addAll(movieList);
-        notifyDataSetChanged();
-    }
 
     @Override
     public Filter getFilter() {
@@ -90,13 +87,13 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
 
-            List<MoviePageResult> filteredList = new ArrayList<>();
+            List<Result> filteredList = new ArrayList<>();
             if (constraint == null || constraint.length() == 0) {
                 filteredList.addAll(filterMovieList);
             } else {
 //                String filterPattern = constraint.toString().toLowerCase().trim();
 
-                for (MoviePageResult moviePageResult : filterMovieList) {
+                for (Result moviePageResult : filterMovieList) {
                     if (moviePageResult.getTitle().toLowerCase().contains(constraint.toString().toLowerCase())) {
                         filteredList.add(moviePageResult);
                     }

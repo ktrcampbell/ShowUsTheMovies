@@ -7,7 +7,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bb.showusthemovies.R;
-import com.bb.showusthemovies.model.MoviePageResult;
+import com.bb.showusthemovies.model.Result;
 import com.bb.showusthemovies.util.Constants;
 import com.bumptech.glide.Glide;
 
@@ -26,7 +26,6 @@ public class DetailActivity extends AppCompatActivity {
 
     @BindView(R.id.detail_genre_textview)
     TextView genreTextView;
-
     @BindView(R.id.detail_release_year_textview)
     TextView releaseDateTextView;
 
@@ -39,7 +38,7 @@ public class DetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_movie_detail_layout);
         ButterKnife.bind(this);
 
-        MoviePageResult displayMovie = ((MoviePageResult) getIntent().getSerializableExtra(MOVIE_KEY));
+        Result displayMovie = ((Result) getIntent().getSerializableExtra(MOVIE_KEY));
         titleTextView.setText(displayMovie.getTitle());
 //        genreTextView.setText(displayMovie.(String.valueOf(getGenres());
         releaseDateTextView.setText(displayMovie.getReleaseDate());

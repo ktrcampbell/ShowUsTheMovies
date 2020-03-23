@@ -5,23 +5,23 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
+
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-
 
 import com.bb.showusthemovies.R;
 import com.bb.showusthemovies.adapter.MovieAdapter;
 import com.bb.showusthemovies.model.MoviePageResult;
+import com.bb.showusthemovies.model.Result;
 import com.bb.showusthemovies.network.MovieRetrofitInstance;
 import com.bb.showusthemovies.util.Constants;
 import com.bb.showusthemovies.util.DebugLogger;
+import com.bb.showusthemovies.viewmodel.MovieViewModel;
 
 
 import java.io.Serializable;
@@ -35,15 +35,20 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class HomeActivity extends AppCompatActivity implements MovieAdapter.MovieClickListener {
+public class HomeActivity extends AppCompatActivity {
 
     Toolbar toolbar;
 
     List<MoviePageResult> resultList = new ArrayList<>();
 
+    private MovieViewModel viewModel;
+    private Observer<MoviePageResult> listObserver;
+
     private MovieRetrofitInstance retrofitInstance = new MovieRetrofitInstance();
 
     MovieAdapter movieAdapter;
+
+    private MovieListFragment listFragment = new MovieListFragment();
 
     @BindView(R.id.movie_recyclerview)
     RecyclerView movieRecyclerView;
@@ -56,39 +61,55 @@ public class HomeActivity extends AppCompatActivity implements MovieAdapter.Movi
 
         toolbar = (Toolbar) findViewById(R.id.app_toolbar);
 
-        DividerItemDecoration itemDecoration = new DividerItemDecoration(this, RecyclerView.VERTICAL);
-        movieRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        movieRecyclerView.setAdapter(new MovieAdapter(resultList, this));
-        movieRecyclerView.addItemDecoration(itemDecoration);
-        getMovies();
+        viewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
+        listObserver = listResults -> displayInformation(listResults);
+
+        viewModel.getMovieList(Constants.API_KEY)
+                .observe(this, listObserver);
+
+        //getMovies();
 
     }
 
-    private void getMovies() {
+    private void displayInformation(MoviePageResult listResults) {
+        for (int i = 0; i < listResults.size() ; i++) {
 
-        retrofitInstance.getMovies(Constants.API_KEY)
-                .enqueue(new Callback<MoviePageResult>() {
-                    @Override
-                    public void onResponse(Call<MoviePageResult> call, Response<MoviePageResult> response) {
-
-                        List<MoviePageResult> list = new ArrayList<>();
-                        list.add(response.body());
-                        showMovies(list);
-                        DebugLogger.logDebug("URL" + call.request().url());
-                    }
-
-                    @Override
-                    public void onFailure(Call<MoviePageResult> call, Throwable t) {
-
-                        DebugLogger.logError(new Exception(t));
-                    }
-                });
+        }
     }
 
-    private void showMovies(List<MoviePageResult> resultList) {
-        MovieAdapter adapter = new MovieAdapter(resultList, this);
-        movieRecyclerView.setAdapter(adapter);
-        movieRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+//    private void getMovies() {
+//
+//        retrofitInstance.getRecentMovies(Constants.API_KEY)
+//                .enqueue(new Callback<MoviePageResult>() {
+//                    @Override
+//                    public void onResponse(Call<MoviePageResult> call, Response<MoviePageResult> response) {
+//
+//                        if (response.isSuccessful() && response.body() != null && response.body().getResults() != null) {
+//                            showMovies(response.body().getResults());
+//                        } else {
+//                            DebugLogger.logError(new Exception("Results or null or empty "));
+//                        }
+//
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Call<MoviePageResult> call, Throwable t) {
+//
+//                        DebugLogger.logError(new Exception(t));
+//                    }
+//                });
+//
+//    }
+
+    private void showMovies(List<Result> results) {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(Constants.MOVIE_KEY, (Serializable) results);
+        listFragment.setArguments(bundle);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.movie_list_frame, listFragment)
+                .addToBackStack(listFragment.getTag())
+                .commit();
     }
 
     @Override
@@ -116,13 +137,6 @@ public class HomeActivity extends AppCompatActivity implements MovieAdapter.Movi
         return super.onCreateOptionsMenu(menu);
     }
 
-    @Override
-    public void displayMovie(MoviePageResult moviePageResult) {
-
-        Intent displayMovieIntent = new Intent(this, DetailActivity.class);
-        displayMovieIntent.putExtra(Constants.MOVIE_KEY, (Serializable) moviePageResult);
-        startActivity(displayMovieIntent);
-    }
 
     @Override
     protected void onDestroy() {
