@@ -1,10 +1,9 @@
 package com.bb.showusthemovies.view;
 
+
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
-
-import androidx.appcompat.widget.SearchView;
-import androidx.appcompat.widget.Toolbar;
 
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -13,6 +12,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.SearchView;
+import android.widget.TextView;
+import android.widget.Toolbar;
+
 
 import com.bb.showusthemovies.R;
 import com.bb.showusthemovies.adapter.MovieAdapter;
@@ -27,6 +30,7 @@ import com.bb.showusthemovies.viewmodel.MovieViewModel;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -39,78 +43,15 @@ public class HomeActivity extends AppCompatActivity {
 
     Toolbar toolbar;
 
-    List<MoviePageResult> resultList = new ArrayList<>();
-
-    private MovieViewModel viewModel;
-    private Observer<MoviePageResult> listObserver;
-
-    private MovieRetrofitInstance retrofitInstance = new MovieRetrofitInstance();
-
     MovieAdapter movieAdapter;
-
-    private MovieListFragment listFragment = new MovieListFragment();
-
-    @BindView(R.id.movie_recyclerview)
-    RecyclerView movieRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
-
-        toolbar = (Toolbar) findViewById(R.id.app_toolbar);
-
-        viewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
-        listObserver = listResults -> displayInformation(listResults);
-
-        viewModel.getMovieList(Constants.API_KEY)
-                .observe(this, listObserver);
-
-        //getMovies();
 
     }
 
-    private void displayInformation(MoviePageResult listResults) {
-        for (int i = 0; i < listResults.size() ; i++) {
-
-        }
-    }
-
-//    private void getMovies() {
-//
-//        retrofitInstance.getRecentMovies(Constants.API_KEY)
-//                .enqueue(new Callback<MoviePageResult>() {
-//                    @Override
-//                    public void onResponse(Call<MoviePageResult> call, Response<MoviePageResult> response) {
-//
-//                        if (response.isSuccessful() && response.body() != null && response.body().getResults() != null) {
-//                            showMovies(response.body().getResults());
-//                        } else {
-//                            DebugLogger.logError(new Exception("Results or null or empty "));
-//                        }
-//
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Call<MoviePageResult> call, Throwable t) {
-//
-//                        DebugLogger.logError(new Exception(t));
-//                    }
-//                });
-//
-//    }
-
-    private void showMovies(List<Result> results) {
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(Constants.MOVIE_KEY, (Serializable) results);
-        listFragment.setArguments(bundle);
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.movie_list_frame, listFragment)
-                .addToBackStack(listFragment.getTag())
-                .commit();
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -129,14 +70,18 @@ public class HomeActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-
-                movieAdapter.getFilter().filter(newText);
+                if(movieAdapter != null){
+                movieAdapter.getFilter().filter(newText);}
                 return false;
             }
         });
         return super.onCreateOptionsMenu(menu);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     protected void onDestroy() {

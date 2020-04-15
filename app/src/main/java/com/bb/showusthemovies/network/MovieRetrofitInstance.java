@@ -28,7 +28,7 @@ public class MovieRetrofitInstance {
         return retrofit.create(MovieService.class);
     }
 
-    public static Call<List<MoviePageResult>> getRecentMovies(String apiKey){
+    public Call<MoviePageResult> getRecentMovies(String apiKey){
         return movieService.getLatestMovie(Constants.API_KEY, Constants.SORT_BY);
     }
 }

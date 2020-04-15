@@ -36,9 +36,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         this.filterMovieList = new ArrayList<>(resultList);
     }
 
-    public MovieAdapter(List<MoviePageResult> moviePageResults) {
-    }
-
     public interface MovieClickListener{
         void displayMovie(Result moviePageResult);
     }
