@@ -1,0 +1,27 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="200dp"
+    android:height="200dp"
+    android:viewportWidth="200"
+    android:viewportHeight="200">
+  <path
+      android:pathData="m34.751,70.597l0,110.402l131.598,0l0,-110.402l-131.598,0z"
+      android:fillType="evenOdd">
+  </path>
+  <path
+      android:pathData="M34.754,70.613l131.598,0l0,23.789l-131.598,0z"
+      android:fillType="evenOdd">
+  </path>
+  <path
+      android:pathData="M28.595,47.635l127.114,-34.06l6.157,22.978l-127.114,34.06z"
+      android:fillType="evenOdd">
+  </path>
+  <path
+      android:pathData="m41.225,44.261 l-9.246,16.015l2.772,10.344l5.422,-1.453l16.819,-29.131l-15.766,4.225zM69.078,36.798 L52.238,65.934l15.788,-4.23l16.819,-29.131l-15.766,4.225zM96.909,29.34 L80.091,58.471l15.766,-4.225l16.819,-29.131l-15.766,4.225zM124.741,21.883 L107.922,51.014l15.788,-4.23l16.819,-29.131l-15.788,4.23zM152.593,14.42l-16.826,29.133l15.766,-4.225l7.556,-13.088l-3.39,-12.652l-3.114,0.834z"
+      android:fillType="evenOdd">
+  </path>
+  <path
+      android:pathData="m34.751,70.62l0,10.686l13.098,13.098l16.323,0l-23.784,-23.784l-5.636,0zM52.899,70.62 L76.684,94.405l16.323,0l-23.787,-23.785l-16.323,0zM81.712,70.62 L105.497,94.405l16.323,0l-23.779,-23.785l-16.323,0zM110.525,70.62 L134.333,94.405l16.323,0l-23.785,-23.785l-16.345,0zM139.36,70.62 L163.145,94.405l3.201,0l0,-13.122l-10.664,-10.664l-16.323,0z"
+      android:fillType="evenOdd">
+  </path>
+</vector>
